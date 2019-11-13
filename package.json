@@ -6,7 +6,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PeculiarVentures/js-zxing-pdf417"
+    "url": "https://github.com/jsondavis/js-zxing-pdf417"
+  },
+  "scripts": {
+      "build": "grunt"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

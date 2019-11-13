@@ -12,10 +12,10 @@ http://peculiarventures.github.io/js-zxing-pdf417
 
 Build
 -----
-
+```js
   npm install
-  
-  grunt
+  npm run build
+```
 
 
 Requirements

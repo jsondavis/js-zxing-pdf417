@@ -2,19 +2,24 @@
   "name": "js-zxing-pdf417",
   "version": "0.0.3",
   "description": "Javascript port of the ZXing's PDF417 module.",
-  "keywords": ["pdf417", "OCR", "zxing"],
+  "keywords": [
+    "pdf417",
+    "OCR",
+    "zxing"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsondavis/js-zxing-pdf417"
   },
   "scripts": {
-      "build": "grunt"
+    "build": "grunt"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.6.0"
+    "grunt-contrib-uglify": "^0.6.0",
+    "prettier": "1.19.1"
   }
 }

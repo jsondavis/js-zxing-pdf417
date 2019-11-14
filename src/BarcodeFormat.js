@@ -1,9 +1,8 @@
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -44,4 +43,3 @@ ZXing.BarcodeFormat = {
     IMB: 524288,
     All_1D: 61918
 };
-

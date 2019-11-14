@@ -1,9 +1,8 @@
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -21,12 +20,14 @@
 // limitations under the License.
 ///
 
-ZXing.BinaryBitmap = function (binarizer) {
+ZXing.BinaryBitmap = function(binarizer) {
     this.binarizer = null;
     this.matrix = null;
-    if (binarizer instanceof ZXing.Binarizer ||
+    if (
+        binarizer instanceof ZXing.Binarizer ||
         binarizer instanceof ZXing.Common.HybridBinarizer ||
-        binarizer instanceof ZXing.Common.GlobalHistogramBinarizer) {
+        binarizer instanceof ZXing.Common.GlobalHistogramBinarizer
+    ) {
         if (!binarizer) {
             throw new Error("Binarizer must be non-null.");
         }
@@ -39,38 +40,45 @@ ZXing.BinaryBitmap = function (binarizer) {
         this.matrix = matrix;
     }
 };
-ZXing.BinaryBitmap.prototype.get_Width = function () {
+ZXing.BinaryBitmap.prototype.get_Width = function() {
     return this.binarizer.get_Width();
 };
-ZXing.BinaryBitmap.prototype.get_Height = function () {
+ZXing.BinaryBitmap.prototype.get_Height = function() {
     return this.binarizer.get_Height();
 };
-ZXing.BinaryBitmap.prototype.getBlackRow = function (y, row) {
+ZXing.BinaryBitmap.prototype.getBlackRow = function(y, row) {
     return this.binarizer.getBlackRow(y, row);
 };
-ZXing.BinaryBitmap.prototype.get_BlackMatrix = function () {
-    return (this.matrix ? this.matrix : (this.matrix = this.binarizer.get_BlackMatrix()));
+ZXing.BinaryBitmap.prototype.get_BlackMatrix = function() {
+    return this.matrix
+        ? this.matrix
+        : (this.matrix = this.binarizer.get_BlackMatrix());
 };
-ZXing.BinaryBitmap.prototype.get_CropSupported = function () {
+ZXing.BinaryBitmap.prototype.get_CropSupported = function() {
     return this.binarizer.get_LuminanceSource().get_CropSupported();
 };
-ZXing.BinaryBitmap.prototype.crop = function (left, top, width, height) {
-    var newSource = this.binarizer.get_LuminanceSource().crop(left, top, width, height);
+ZXing.BinaryBitmap.prototype.crop = function(left, top, width, height) {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .crop(left, top, width, height);
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.get_RotateSupported = function () {
+ZXing.BinaryBitmap.prototype.get_RotateSupported = function() {
     return this.binarizer.get_LuminanceSource().get_RotateSupported();
 };
-ZXing.BinaryBitmap.prototype.rotateCounterClockwise = function () {
-    var newSource = this.binarizer.get_LuminanceSource().rotateCounterClockwise();
+ZXing.BinaryBitmap.prototype.rotateCounterClockwise = function() {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .rotateCounterClockwise();
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.rotateCounterClockwise45 = function () {
-    var newSource = this.binarizer.get_LuminanceSource().rotateCounterClockwise45();
+ZXing.BinaryBitmap.prototype.rotateCounterClockwise45 = function() {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .rotateCounterClockwise45();
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.toString = function () {
+ZXing.BinaryBitmap.prototype.toString = function() {
     var blackMatrix = this.get_BlackMatrix();
     return blackMatrix ? blackMatrix.toString() : "";
 };
-

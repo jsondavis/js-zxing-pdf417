@@ -1,9 +1,8 @@
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -38,4 +37,3 @@ ZXing.DecodeHintType = {
     RETURN_CODABAR_START_END: 13,
     ALLOWED_EAN_EXTENSIONS: 14
 };
-

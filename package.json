@@ -14,8 +14,8 @@
   },
   "scripts": {
     "build": "grunt",
-    "lint": "prettier --write \"pdf417/**/*.js\"",
-    "lint:check": "prettier --check \"pdf417/**/*.js\""
+    "lint": "prettier --write \"src/**/*.js\"",
+    "lint:check": "prettier --check \"src/**/*.js\""
   },
   "devDependencies": {
     "grunt": "~0.4.1",

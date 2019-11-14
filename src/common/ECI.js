@@ -20,17 +20,21 @@
 // limitations under the License.
 ///
 
-ZXing.ResultMetadataType = {
-    OTHER: 0,
-    ORIENTATION: 1,
-    BYTE_SEGMENTS: 2,
-    ERROR_CORRECTION_LEVEL: 3,
-    ISSUE_NUMBER: 4,
-    SUGGESTED_PRICE: 5,
-    POSSIBLE_COUNTRY: 6,
-    UPC_EAN_EXTENSION: 7,
-    STRUCTURED_APPEND_SEQUENCE: 8,
-    STRUCTURED_APPEND_PARITY: 9,
-    PDF417_EXTRA_METADATA: 10,
-    AZTEC_EXTRA_METADATA: 11
+ZXing.Common.ECI = function(value_Renamed) {
+    this.value_Renamed = 0;
+    this.value_Renamed = value_Renamed;
+};
+ZXing.Common.ECI.prototype.get_Value = function() {
+    return this.value_Renamed;
+};
+ZXing.Common.ECI.getECIByValue = function(value_Renamed) {
+    if (value_Renamed < 0 || value_Renamed > 999999) {
+        throw new Error("Bad ECI value: " + value_Renamed);
+    }
+    if (value_Renamed < 900) {
+        return ZXing.Common.CharacterSetECI.getCharacterSetECIByValue(
+            value_Renamed
+        );
+    }
+    return null;
 };

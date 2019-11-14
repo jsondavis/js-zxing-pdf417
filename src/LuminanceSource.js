@@ -1,9 +1,8 @@
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -21,46 +20,48 @@
 // limitations under the License.
 ///
 
-ZXing.LuminanceSource = function (width, height) {
+ZXing.LuminanceSource = function(width, height) {
     this.width = 0;
     this.height = 0;
     this.width = width;
     this.height = height;
 };
-ZXing.LuminanceSource.prototype.get_Width = function () {
+ZXing.LuminanceSource.prototype.get_Width = function() {
     return this.width;
 };
-ZXing.LuminanceSource.prototype.set_Width = function (value) {
+ZXing.LuminanceSource.prototype.set_Width = function(value) {
     this.width = value;
 };
-ZXing.LuminanceSource.prototype.get_Height = function () {
+ZXing.LuminanceSource.prototype.get_Height = function() {
     return this.height;
 };
-ZXing.LuminanceSource.prototype.set_Height = function (value) {
+ZXing.LuminanceSource.prototype.set_Height = function(value) {
     this.height = value;
 };
-ZXing.LuminanceSource.prototype.get_CropSupported = function () {
+ZXing.LuminanceSource.prototype.get_CropSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.crop = function (left, top, width, height) {
+ZXing.LuminanceSource.prototype.crop = function(left, top, width, height) {
     throw new Error("This luminance source does not support cropping.");
 };
-ZXing.LuminanceSource.prototype.get_RotateSupported = function () {
+ZXing.LuminanceSource.prototype.get_RotateSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.rotateCounterClockwise = function () {
-    throw  new Error("This luminance source does not support rotation.");
+ZXing.LuminanceSource.prototype.rotateCounterClockwise = function() {
+    throw new Error("This luminance source does not support rotation.");
 };
-ZXing.LuminanceSource.prototype.rotateCounterClockwise45 = function () {
-    throw new Error("This luminance source does not support rotation by 45 degrees.");
+ZXing.LuminanceSource.prototype.rotateCounterClockwise45 = function() {
+    throw new Error(
+        "This luminance source does not support rotation by 45 degrees."
+    );
 };
-ZXing.LuminanceSource.prototype.get_InversionSupported = function () {
+ZXing.LuminanceSource.prototype.get_InversionSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.invert = function () {
+ZXing.LuminanceSource.prototype.invert = function() {
     throw new Error("This luminance source does not support inversion.");
 };
-ZXing.LuminanceSource.prototype.toString = function () {
+ZXing.LuminanceSource.prototype.toString = function() {
     var row = new Uint8Array(this.width);
     var result = "";
     for (var y = 0; y < this.height; y++) {
@@ -70,14 +71,11 @@ ZXing.LuminanceSource.prototype.toString = function () {
             var c;
             if (luminance < 64) {
                 c = "#";
-            }
-            else if (luminance < 128) {
+            } else if (luminance < 128) {
                 c = "+";
-            }
-            else if (luminance < 192) {
+            } else if (luminance < 192) {
                 c = ".";
-            }
-            else {
+            } else {
                 c = " ";
             }
             result += c;
@@ -86,4 +84,3 @@ ZXing.LuminanceSource.prototype.toString = function () {
     }
     return result;
 };
-

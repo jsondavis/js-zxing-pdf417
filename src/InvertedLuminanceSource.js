@@ -1,9 +1,8 @@
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -21,46 +20,56 @@
 // limitations under the License.
 ///
 
-ZXing.InvertedLuminanceSource = function (delegate) {
+ZXing.InvertedLuminanceSource = function(delegate) {
     this.delegate = null;
     this.invertedMatrix = null;
     this.delegate = delegate;
 };
-ZXing.InvertedLuminanceSource.prototype.getRow = function (y, row){
+ZXing.InvertedLuminanceSource.prototype.getRow = function(y, row) {
     row = this.delegate.getRow(y, row);
     var width = this.get_Width();
-    for (var i = 0; i < width; i++){
-        row[i] = (255 - (row[i] & 255));
+    for (var i = 0; i < width; i++) {
+        row[i] = 255 - (row[i] & 255);
     }
     return row;
 };
-ZXing.InvertedLuminanceSource.prototype.get_Matrix = function (){
-    if (!this.invertedMatrix){
+ZXing.InvertedLuminanceSource.prototype.get_Matrix = function() {
+    if (!this.invertedMatrix) {
         var matrix = this.delegate.get_Matrix();
         var length = this.get_Width() * this.get_Height();
         this.invertedMatrix = new Uint8Array(length);
-        for (var i = 0; i < length; i++){
-            this.invertedMatrix[i] = (255 - (matrix[i] & 255));
+        for (var i = 0; i < length; i++) {
+            this.invertedMatrix[i] = 255 - (matrix[i] & 255);
         }
     }
     return this.invertedMatrix;
 };
-ZXing.InvertedLuminanceSource.prototype.get_CropSupported = function (){
+ZXing.InvertedLuminanceSource.prototype.get_CropSupported = function() {
     return this.delegate.get_CropSupported();
 };
-ZXing.InvertedLuminanceSource.prototype.crop = function (left, top, width, height){
-    return new ZXing.InvertedLuminanceSource(this.delegate.crop(left, top, width, height));
+ZXing.InvertedLuminanceSource.prototype.crop = function(
+    left,
+    top,
+    width,
+    height
+) {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.crop(left, top, width, height)
+    );
 };
-ZXing.InvertedLuminanceSource.prototype.get_RotateSupported = function (){
+ZXing.InvertedLuminanceSource.prototype.get_RotateSupported = function() {
     return this.delegate.get_RotateSupported();
 };
-ZXing.InvertedLuminanceSource.prototype.invert = function (){
+ZXing.InvertedLuminanceSource.prototype.invert = function() {
     return this.delegate;
 };
-ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise = function (){
-    return new ZXing.InvertedLuminanceSource(this.delegate.rotateCounterClockwise());
+ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise = function() {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.rotateCounterClockwise()
+    );
 };
-ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise45 = function (){
-    return new ZXing.InvertedLuminanceSource(this.delegate.rotateCounterClockwise45());
+ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise45 = function() {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.rotateCounterClockwise45()
+    );
 };
-

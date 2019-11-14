@@ -2,10 +2,9 @@
 document.addEventListener("DOMContentLoaded", function() {
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -23,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // limitations under the License.
 ///
 
-var ZeroFilledInt32Array = function (len) {
+var ZeroFilledInt32Array = function(len) {
     var rv = [];
     while (--len >= 0) {
         rv.push(0);
@@ -31,163 +30,169 @@ var ZeroFilledInt32Array = function (len) {
     return rv;
 };
 
-if (typeof (Uint8Array) == "undefined")
-    Uint8Array = Array;
-if (typeof (Int32Array) == "undefined") {
+if (typeof Uint8Array == "undefined") Uint8Array = Array;
+if (typeof Int32Array == "undefined") {
     Int32Array = Array;
 } else {
-    ZeroFilledInt32Array = function (size) {
+    ZeroFilledInt32Array = function(size) {
         return new Int32Array(size);
     };
 }
 
-if (typeof ($Inherit) == 'undefined') {
-    var $Inherit = function (ce, ce2) {
-
-        if (typeof (Object.getOwnPropertyNames) == 'undefined') {
-
+if (typeof $Inherit == "undefined") {
+    var $Inherit = function(ce, ce2) {
+        if (typeof Object.getOwnPropertyNames == "undefined") {
             for (var p in ce2.prototype)
-                if (typeof (ce.prototype[p]) == 'undefined' || ce.prototype[p] == Object.prototype[p])
+                if (
+                    typeof ce.prototype[p] == "undefined" ||
+                    ce.prototype[p] == Object.prototype[p]
+                )
                     ce.prototype[p] = ce2.prototype[p];
-            for (var p in ce2)
-                if (typeof (ce[p]) == 'undefined')
-                    ce[p] = ce2[p];
+            for (var p in ce2) if (typeof ce[p] == "undefined") ce[p] = ce2[p];
             ce.$baseCtor = ce2;
-
         } else {
-
             var props = Object.getOwnPropertyNames(ce2.prototype);
             for (var i = 0; i < props.length; i++)
-                if (typeof (Object.getOwnPropertyDescriptor(ce.prototype, props[i])) == 'undefined')
-                    Object.defineProperty(ce.prototype, props[i], Object.getOwnPropertyDescriptor(ce2.prototype, props[i]));
+                if (
+                    typeof Object.getOwnPropertyDescriptor(
+                        ce.prototype,
+                        props[i]
+                    ) == "undefined"
+                )
+                    Object.defineProperty(
+                        ce.prototype,
+                        props[i],
+                        Object.getOwnPropertyDescriptor(ce2.prototype, props[i])
+                    );
 
-            for (var p in ce2)
-                if (typeof (ce[p]) == 'undefined')
-                    ce[p] = ce2[p];
+            for (var p in ce2) if (typeof ce[p] == "undefined") ce[p] = ce2[p];
             ce.$baseCtor = ce2;
-
         }
-
-    }
-};
+    };
+}
 
 function ArrayCopy(source, sourceIndex, dest, destIndex, n) {
-    n = typeof n != 'undefined' ? n : source.length;
+    n = typeof n != "undefined" ? n : source.length;
     destIndex = destIndex || 0;
     sourceIndex = sourceIndex || 0;
 
-    var max = (dest.length > 0 && dest.length < n) ? dest.length : n;
+    var max = dest.length > 0 && dest.length < n ? dest.length : n;
     max += sourceIndex;
 
     for (; sourceIndex < max; sourceIndex++)
         dest[destIndex++] = source[sourceIndex];
 }
 
-if (typeof Array.prototype.blockCopy != 'function') {
-    Array.prototype.blockCopy = function (dest, sourceIndex, destIndex, n) {
-        n = typeof n != 'undefined' ? n : this.length;
+if (typeof Array.prototype.blockCopy != "function") {
+    Array.prototype.blockCopy = function(dest, sourceIndex, destIndex, n) {
+        n = typeof n != "undefined" ? n : this.length;
         destIndex = destIndex || 0;
         sourceIndex = sourceIndex || 0;
 
-        var max = (dest.length > 0 && dest.length < n) ? dest.length : n;
+        var max = dest.length > 0 && dest.length < n ? dest.length : n;
         max += sourceIndex;
         for (; sourceIndex < max; sourceIndex++)
             dest[destIndex++] = this[sourceIndex];
-    }
+    };
 }
 
-if (typeof Int16Array.prototype.blockCopy != 'function') {
+if (typeof Int16Array.prototype.blockCopy != "function") {
     Int16Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Int32Array.prototype.blockCopy != 'function') {
+if (typeof Int32Array.prototype.blockCopy != "function") {
     Int32Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Uint16Array.prototype.blockCopy != 'function') {
+if (typeof Uint16Array.prototype.blockCopy != "function") {
     Uint16Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Uint8Array.prototype.blockCopy != 'function') {
+if (typeof Uint8Array.prototype.blockCopy != "function") {
     Uint8Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Uint32Array.prototype.blockCopy != 'function') {
+if (typeof Uint32Array.prototype.blockCopy != "function") {
     Uint32Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Uint8Array.prototype.blockCopy != 'function') {
+if (typeof Uint8Array.prototype.blockCopy != "function") {
     Uint8Array.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
-if (typeof Uint8ClampedArray.prototype.blockCopy != 'function') {
+if (typeof Uint8ClampedArray.prototype.blockCopy != "function") {
     Uint8ClampedArray.prototype.blockCopy = Array.prototype.blockCopy;
 }
 
 if (!String.prototype.format) {
-    String.prototype.format = function () {
+    String.prototype.format = function() {
         var args = arguments;
         if (arguments.length == 1 && args[0] instanceof Array) args = args[0];
-        return this.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] != 'undefined'
-              ? args[number]
-              : match
-            ;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != "undefined" ? args[number] : match;
         });
     };
 }
 
-function FormatInteger(n, l, c) { return (n / Math.pow(10, l)).toFixed(l).substr(2).replace(/0/g, c || ' '); }
+function FormatInteger(n, l, c) {
+    return (n / Math.pow(10, l))
+        .toFixed(l)
+        .substr(2)
+        .replace(/0/g, c || " ");
+}
 
-var ZXing = typeof exports != 'undefined' && typeof exports.ZXing != 'undefined' ? exports.ZXing : {};
+var ZXing =
+    typeof exports != "undefined" && typeof exports.ZXing != "undefined"
+        ? exports.ZXing
+        : {};
 
-if (typeof exports != 'undefined')
-    exports.ZXing = ZXing;
+if (typeof exports != "undefined") exports.ZXing = ZXing;
 
-if (typeof (ZXing.Common) == "undefined")
-    ZXing.Common = {};
+if (typeof ZXing.Common == "undefined") ZXing.Common = {};
 
-if (typeof (ZXing.Common.Detector) == "undefined")
-    ZXing.Common.Detector = {};
+if (typeof ZXing.Common.Detector == "undefined") ZXing.Common.Detector = {};
 
-if (typeof (ZXing.PDF417) == "undefined")
-    ZXing.PDF417 = {};
+if (typeof ZXing.PDF417 == "undefined") ZXing.PDF417 = {};
 
-if (typeof (ZXing.PDF417.Internal) == "undefined")
-    ZXing.PDF417.Internal = {};
+if (typeof ZXing.PDF417.Internal == "undefined") ZXing.PDF417.Internal = {};
 
-if (typeof (ZXing.PDF417.Internal.EC) == "undefined")
+if (typeof ZXing.PDF417.Internal.EC == "undefined")
     ZXing.PDF417.Internal.EC = {};
 
-ZXing.SupportClass = function () {
-};
-ZXing.SupportClass.GetCharsFromString = function (sourceString, sourceStart, sourceEnd, destinationArray, destinationStart) {
+ZXing.SupportClass = function() {};
+ZXing.SupportClass.GetCharsFromString = function(
+    sourceString,
+    sourceStart,
+    sourceEnd,
+    destinationArray,
+    destinationStart
+) {
     var sourceCounter = sourceStart;
     var destinationCounter = destinationStart;
     while (sourceCounter < sourceEnd) {
-        destinationArray[destinationCounter] = sourceString.charAt(sourceCounter);
+        destinationArray[destinationCounter] = sourceString.charAt(
+            sourceCounter
+        );
         sourceCounter++;
         destinationCounter++;
     }
 };
-ZXing.SupportClass.SetCapacity = function (vector, newCapacity) {
-    while (newCapacity > vector.length)
-        vector.push(new T());
+ZXing.SupportClass.SetCapacity = function(vector, newCapacity) {
+    while (newCapacity > vector.length) vector.push(new T());
     while (newCapacity < vector.length)
         vector.splice(newCapacity, vector.length - newCapacity);
 };
-ZXing.SupportClass.toStringArray = function (strings) {
+ZXing.SupportClass.toStringArray = function(strings) {
     var obj = new Object(strings);
     var result = [];
     for (var val in obj) {
-        if (!(obj[val] instanceof Function))
-            result.push(obj[val]);
+        if (!(obj[val] instanceof Function)) result.push(obj[val]);
     }
     return result;
 };
-ZXing.SupportClass.Join = function (separator, origvalues) {
+ZXing.SupportClass.Join = function(separator, origvalues) {
     var builder = "";
-    separator = (separator != null ? separator : "");
+    separator = separator != null ? separator : "";
     if (origvalues != null) {
         var values = new Object(origvalues);
         for (var idx in values) {
@@ -200,56 +205,54 @@ ZXing.SupportClass.Join = function (separator, origvalues) {
     }
     return builder;
 };
-ZXing.SupportClass.Fill = function (array, value) {
-  for(var i = 0; i < array.length; i++) {
-    array[i] = value;
-  }
-};
-ZXing.SupportClass.Fill = function (array, startIndex, endIndex, value) {
-  if (arguments.length < 4) {
-    value = startIndex;
-    for(var i = 0; i < array.length; i++) {
+ZXing.SupportClass.Fill = function(array, value) {
+    for (var i = 0; i < array.length; i++) {
         array[i] = value;
     }
-  } else {
-    for(var i1 = startIndex; i1 < endIndex; i1++) {
-      array[i1] = value;
+};
+ZXing.SupportClass.Fill = function(array, startIndex, endIndex, value) {
+    if (arguments.length < 4) {
+        value = startIndex;
+        for (var i = 0; i < array.length; i++) {
+            array[i] = value;
+        }
+    } else {
+        for (var i1 = startIndex; i1 < endIndex; i1++) {
+            array[i1] = value;
+        }
     }
-  }
 };
-ZXing.SupportClass.ToBinaryString = function (x) {
-  var bits = new Array(32);
-  var i = 0;
-  while (x) {
-    bits[i++] = (x & 1) == 1 ? "1" : "0";
-    x >>= 1;
-  }
-  var rv = new Array(i);
-  for(var idx = 0; idx < i; idx++) {
-    rv.push(bits[idx]);
-  }
-  return rv.join("");
+ZXing.SupportClass.ToBinaryString = function(x) {
+    var bits = new Array(32);
+    var i = 0;
+    while (x) {
+        bits[i++] = (x & 1) == 1 ? "1" : "0";
+        x >>= 1;
+    }
+    var rv = new Array(i);
+    for (var idx = 0; idx < i; idx++) {
+        rv.push(bits[idx]);
+    }
+    return rv.join("");
 };
-ZXing.SupportClass.bitCount = function (n) {
-  var ret = 0;
-  while (n) {
-    n &= (n - 1);
-    ret++;
-  }
-  return ret;
+ZXing.SupportClass.bitCount = function(n) {
+    var ret = 0;
+    while (n) {
+        n &= n - 1;
+        ret++;
+    }
+    return ret;
 };
-ZXing.SupportClass.GetValue = function (hintsv, hintType, def) {
-  if (hintsv.hasOwnProperty(hintType)) return hintsv[hintType];
-  return def;
+ZXing.SupportClass.GetValue = function(hintsv, hintType, def) {
+    if (hintsv.hasOwnProperty(hintType)) return hintsv[hintType];
+    return def;
 };
-
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -282,13 +285,11 @@ ZXing.ResultMetadataType = {
     AZTEC_EXTRA_METADATA: 11
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -330,13 +331,11 @@ ZXing.BarcodeFormat = {
     All_1D: 61918
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -354,64 +353,63 @@ ZXing.BarcodeFormat = {
 // limitations under the License.
 ///
 
-ZXing.Result = function (text, rawBytes, resultPoints, format, timestamp) {
-  this.Text = null;
-  this.RawBytes = null;
-  this.ResultPoints = null;
-  this.BarcodeFormat = ZXing.BarcodeFormat.AZTEC;
-  this.ResultMetadata = null;
-  this.Timestamp = 0;
-  if (!text&& !rawBytes) {
-    throw new Error("Text and bytes are null");
-  }
-  this.Text = text;
-  this.RawBytes = rawBytes;
-  this.ResultPoints = resultPoints;
-  this.BarcodeFormat = format;
-  this.ResultMetadata = null;
-  this.Timestamp = timestamp || ((new Date().getTime() * 10000) + 621355968000000000);
-};
-
-ZXing.Result.prototype.putMetadata = function (type, value) {
-  if (!this.ResultMetadata) {
-    this.ResultMetadata = {};
-  }
-  this.ResultMetadata[type] = value;
-};
-ZXing.Result.prototype.putAllMetadata = function (metadata) {
-  if (metadata) {
-    if (!this.ResultMetadata) {
-      this.ResultMetadata = metadata;
-    } else {
-      for(var entry in metadata) {
-        if (metadata.hasOwnProperty(entry))
-          this.ResultMetadata[entry] = metadata[entry];
-      }
+ZXing.Result = function(text, rawBytes, resultPoints, format, timestamp) {
+    this.Text = null;
+    this.RawBytes = null;
+    this.ResultPoints = null;
+    this.BarcodeFormat = ZXing.BarcodeFormat.AZTEC;
+    this.ResultMetadata = null;
+    this.Timestamp = 0;
+    if (!text && !rawBytes) {
+        throw new Error("Text and bytes are null");
     }
-  }
-};
-ZXing.Result.prototype.addResultPoints = function (newPoints) {
-  var oldPoints = this.ResultPoints;
-  if (!oldPoints) {
-    this.ResultPoints = newPoints;
-  } else if (newPoints && newPoints.length > 0) {
-    this.ResultPoints = oldPoints.concat(newPoints);
-  }
-};
-ZXing.Result.prototype.toString = function () {
-  if (!this.Text) {
-    return "[" + this.RawBytes.length + " bytes]";
-  }
-  return this.Text;
+    this.Text = text;
+    this.RawBytes = rawBytes;
+    this.ResultPoints = resultPoints;
+    this.BarcodeFormat = format;
+    this.ResultMetadata = null;
+    this.Timestamp =
+        timestamp || new Date().getTime() * 10000 + 621355968000000000;
 };
 
+ZXing.Result.prototype.putMetadata = function(type, value) {
+    if (!this.ResultMetadata) {
+        this.ResultMetadata = {};
+    }
+    this.ResultMetadata[type] = value;
+};
+ZXing.Result.prototype.putAllMetadata = function(metadata) {
+    if (metadata) {
+        if (!this.ResultMetadata) {
+            this.ResultMetadata = metadata;
+        } else {
+            for (var entry in metadata) {
+                if (metadata.hasOwnProperty(entry))
+                    this.ResultMetadata[entry] = metadata[entry];
+            }
+        }
+    }
+};
+ZXing.Result.prototype.addResultPoints = function(newPoints) {
+    var oldPoints = this.ResultPoints;
+    if (!oldPoints) {
+        this.ResultPoints = newPoints;
+    } else if (newPoints && newPoints.length > 0) {
+        this.ResultPoints = oldPoints.concat(newPoints);
+    }
+};
+ZXing.Result.prototype.toString = function() {
+    if (!this.Text) {
+        return "[" + this.RawBytes.length + " bytes]";
+    }
+    return this.Text;
+};
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -447,13 +445,11 @@ ZXing.DecodeHintType = {
     ALLOWED_EAN_EXTENSIONS: 14
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -471,12 +467,14 @@ ZXing.DecodeHintType = {
 // limitations under the License.
 ///
 
-ZXing.BinaryBitmap = function (binarizer) {
+ZXing.BinaryBitmap = function(binarizer) {
     this.binarizer = null;
     this.matrix = null;
-    if (binarizer instanceof ZXing.Binarizer ||
+    if (
+        binarizer instanceof ZXing.Binarizer ||
         binarizer instanceof ZXing.Common.HybridBinarizer ||
-        binarizer instanceof ZXing.Common.GlobalHistogramBinarizer) {
+        binarizer instanceof ZXing.Common.GlobalHistogramBinarizer
+    ) {
         if (!binarizer) {
             throw new Error("Binarizer must be non-null.");
         }
@@ -489,48 +487,54 @@ ZXing.BinaryBitmap = function (binarizer) {
         this.matrix = matrix;
     }
 };
-ZXing.BinaryBitmap.prototype.get_Width = function () {
+ZXing.BinaryBitmap.prototype.get_Width = function() {
     return this.binarizer.get_Width();
 };
-ZXing.BinaryBitmap.prototype.get_Height = function () {
+ZXing.BinaryBitmap.prototype.get_Height = function() {
     return this.binarizer.get_Height();
 };
-ZXing.BinaryBitmap.prototype.getBlackRow = function (y, row) {
+ZXing.BinaryBitmap.prototype.getBlackRow = function(y, row) {
     return this.binarizer.getBlackRow(y, row);
 };
-ZXing.BinaryBitmap.prototype.get_BlackMatrix = function () {
-    return (this.matrix ? this.matrix : (this.matrix = this.binarizer.get_BlackMatrix()));
+ZXing.BinaryBitmap.prototype.get_BlackMatrix = function() {
+    return this.matrix
+        ? this.matrix
+        : (this.matrix = this.binarizer.get_BlackMatrix());
 };
-ZXing.BinaryBitmap.prototype.get_CropSupported = function () {
+ZXing.BinaryBitmap.prototype.get_CropSupported = function() {
     return this.binarizer.get_LuminanceSource().get_CropSupported();
 };
-ZXing.BinaryBitmap.prototype.crop = function (left, top, width, height) {
-    var newSource = this.binarizer.get_LuminanceSource().crop(left, top, width, height);
+ZXing.BinaryBitmap.prototype.crop = function(left, top, width, height) {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .crop(left, top, width, height);
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.get_RotateSupported = function () {
+ZXing.BinaryBitmap.prototype.get_RotateSupported = function() {
     return this.binarizer.get_LuminanceSource().get_RotateSupported();
 };
-ZXing.BinaryBitmap.prototype.rotateCounterClockwise = function () {
-    var newSource = this.binarizer.get_LuminanceSource().rotateCounterClockwise();
+ZXing.BinaryBitmap.prototype.rotateCounterClockwise = function() {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .rotateCounterClockwise();
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.rotateCounterClockwise45 = function () {
-    var newSource = this.binarizer.get_LuminanceSource().rotateCounterClockwise45();
+ZXing.BinaryBitmap.prototype.rotateCounterClockwise45 = function() {
+    var newSource = this.binarizer
+        .get_LuminanceSource()
+        .rotateCounterClockwise45();
     return new ZXing.BinaryBitmap(this.binarizer.createBinarizer(newSource));
 };
-ZXing.BinaryBitmap.prototype.toString = function () {
+ZXing.BinaryBitmap.prototype.toString = function() {
     var blackMatrix = this.get_BlackMatrix();
     return blackMatrix ? blackMatrix.toString() : "";
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -548,30 +552,28 @@ ZXing.BinaryBitmap.prototype.toString = function () {
 // limitations under the License.
 ///
 
-ZXing.Binarizer = function (source) {
+ZXing.Binarizer = function(source) {
     this.source = null;
     if (!source) {
         throw new Error("Source must be non-null.");
     }
     this.source = source;
 };
-ZXing.Binarizer.prototype.get_LuminanceSource = function () {
+ZXing.Binarizer.prototype.get_LuminanceSource = function() {
     return this.source;
 };
-ZXing.Binarizer.prototype.get_Width = function () {
+ZXing.Binarizer.prototype.get_Width = function() {
     return this.source.get_Width();
 };
-ZXing.Binarizer.prototype.get_Height = function () {
+ZXing.Binarizer.prototype.get_Height = function() {
     return this.source.get_Height();
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -589,39 +591,42 @@ ZXing.Binarizer.prototype.get_Height = function () {
 // limitations under the License.
 ///
 
-ZXing.ResultPoint = function (x, y) {
+ZXing.ResultPoint = function(x, y) {
     this.x = 0;
     this.y = 0;
     this.x = x;
     this.y = y;
 };
 
-ZXing.ResultPoint.prototype.Equals = function (other) {
+ZXing.ResultPoint.prototype.Equals = function(other) {
     var otherPoint = other instanceof ZXing.ResultPoint ? other : null;
-    if (!otherPoint)
-        return false;
+    if (!otherPoint) return false;
     return this.x == otherPoint.x && this.y == otherPoint.y;
 };
-ZXing.ResultPoint.prototype.toString = function () {
+ZXing.ResultPoint.prototype.toString = function() {
     var result = "(" + this.x + ", " + this.y + ")";
     return result;
 };
-ZXing.ResultPoint.orderBestPatterns = function (patterns) {
+ZXing.ResultPoint.orderBestPatterns = function(patterns) {
     var zeroOneDistance = ZXing.ResultPoint.distance(patterns[0], patterns[1]);
     var oneTwoDistance = ZXing.ResultPoint.distance(patterns[1], patterns[2]);
     var zeroTwoDistance = ZXing.ResultPoint.distance(patterns[0], patterns[2]);
     var pointA, pointB, pointC;
-    if (oneTwoDistance >= zeroOneDistance && oneTwoDistance >= zeroTwoDistance) {
+    if (
+        oneTwoDistance >= zeroOneDistance &&
+        oneTwoDistance >= zeroTwoDistance
+    ) {
         pointB = patterns[0];
         pointA = patterns[1];
         pointC = patterns[2];
-    }
-    else if (zeroTwoDistance >= oneTwoDistance && zeroTwoDistance >= zeroOneDistance) {
+    } else if (
+        zeroTwoDistance >= oneTwoDistance &&
+        zeroTwoDistance >= zeroOneDistance
+    ) {
         pointB = patterns[1];
         pointA = patterns[0];
         pointC = patterns[2];
-    }
-    else {
+    } else {
         pointB = patterns[2];
         pointA = patterns[0];
         pointC = patterns[1];
@@ -635,22 +640,27 @@ ZXing.ResultPoint.orderBestPatterns = function (patterns) {
     patterns[1] = pointB;
     patterns[2] = pointC;
 };
-ZXing.ResultPoint.distance = function (pattern1, pattern2) {
-    return ZXing.Common.Detector.MathUtils.distance(pattern1.x, pattern1.y, pattern2.x, pattern2.y);
+ZXing.ResultPoint.distance = function(pattern1, pattern2) {
+    return ZXing.Common.Detector.MathUtils.distance(
+        pattern1.x,
+        pattern1.y,
+        pattern2.x,
+        pattern2.y
+    );
 };
-ZXing.ResultPoint.crossProductZ = function (pointA, pointB, pointC) {
+ZXing.ResultPoint.crossProductZ = function(pointA, pointB, pointC) {
     var bX = pointB.x;
     var bY = pointB.y;
-    return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
+    return (
+        (pointC.x - bX) * (pointA.y - bY) - (pointC.y - bY) * (pointA.x - bX)
+    );
 };
-
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -668,46 +678,48 @@ ZXing.ResultPoint.crossProductZ = function (pointA, pointB, pointC) {
 // limitations under the License.
 ///
 
-ZXing.LuminanceSource = function (width, height) {
+ZXing.LuminanceSource = function(width, height) {
     this.width = 0;
     this.height = 0;
     this.width = width;
     this.height = height;
 };
-ZXing.LuminanceSource.prototype.get_Width = function () {
+ZXing.LuminanceSource.prototype.get_Width = function() {
     return this.width;
 };
-ZXing.LuminanceSource.prototype.set_Width = function (value) {
+ZXing.LuminanceSource.prototype.set_Width = function(value) {
     this.width = value;
 };
-ZXing.LuminanceSource.prototype.get_Height = function () {
+ZXing.LuminanceSource.prototype.get_Height = function() {
     return this.height;
 };
-ZXing.LuminanceSource.prototype.set_Height = function (value) {
+ZXing.LuminanceSource.prototype.set_Height = function(value) {
     this.height = value;
 };
-ZXing.LuminanceSource.prototype.get_CropSupported = function () {
+ZXing.LuminanceSource.prototype.get_CropSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.crop = function (left, top, width, height) {
+ZXing.LuminanceSource.prototype.crop = function(left, top, width, height) {
     throw new Error("This luminance source does not support cropping.");
 };
-ZXing.LuminanceSource.prototype.get_RotateSupported = function () {
+ZXing.LuminanceSource.prototype.get_RotateSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.rotateCounterClockwise = function () {
-    throw  new Error("This luminance source does not support rotation.");
+ZXing.LuminanceSource.prototype.rotateCounterClockwise = function() {
+    throw new Error("This luminance source does not support rotation.");
 };
-ZXing.LuminanceSource.prototype.rotateCounterClockwise45 = function () {
-    throw new Error("This luminance source does not support rotation by 45 degrees.");
+ZXing.LuminanceSource.prototype.rotateCounterClockwise45 = function() {
+    throw new Error(
+        "This luminance source does not support rotation by 45 degrees."
+    );
 };
-ZXing.LuminanceSource.prototype.get_InversionSupported = function () {
+ZXing.LuminanceSource.prototype.get_InversionSupported = function() {
     return false;
 };
-ZXing.LuminanceSource.prototype.invert = function () {
+ZXing.LuminanceSource.prototype.invert = function() {
     throw new Error("This luminance source does not support inversion.");
 };
-ZXing.LuminanceSource.prototype.toString = function () {
+ZXing.LuminanceSource.prototype.toString = function() {
     var row = new Uint8Array(this.width);
     var result = "";
     for (var y = 0; y < this.height; y++) {
@@ -717,14 +729,11 @@ ZXing.LuminanceSource.prototype.toString = function () {
             var c;
             if (luminance < 64) {
                 c = "#";
-            }
-            else if (luminance < 128) {
+            } else if (luminance < 128) {
                 c = "+";
-            }
-            else if (luminance < 192) {
+            } else if (luminance < 192) {
                 c = ".";
-            }
-            else {
+            } else {
                 c = " ";
             }
             result += c;
@@ -734,13 +743,11 @@ ZXing.LuminanceSource.prototype.toString = function () {
     return result;
 };
 
-
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -758,56 +765,65 @@ ZXing.LuminanceSource.prototype.toString = function () {
 // limitations under the License.
 ///
 
-ZXing.InvertedLuminanceSource = function (delegate) {
+ZXing.InvertedLuminanceSource = function(delegate) {
     this.delegate = null;
     this.invertedMatrix = null;
     this.delegate = delegate;
 };
-ZXing.InvertedLuminanceSource.prototype.getRow = function (y, row){
+ZXing.InvertedLuminanceSource.prototype.getRow = function(y, row) {
     row = this.delegate.getRow(y, row);
     var width = this.get_Width();
-    for (var i = 0; i < width; i++){
-        row[i] = (255 - (row[i] & 255));
+    for (var i = 0; i < width; i++) {
+        row[i] = 255 - (row[i] & 255);
     }
     return row;
 };
-ZXing.InvertedLuminanceSource.prototype.get_Matrix = function (){
-    if (!this.invertedMatrix){
+ZXing.InvertedLuminanceSource.prototype.get_Matrix = function() {
+    if (!this.invertedMatrix) {
         var matrix = this.delegate.get_Matrix();
         var length = this.get_Width() * this.get_Height();
         this.invertedMatrix = new Uint8Array(length);
-        for (var i = 0; i < length; i++){
-            this.invertedMatrix[i] = (255 - (matrix[i] & 255));
+        for (var i = 0; i < length; i++) {
+            this.invertedMatrix[i] = 255 - (matrix[i] & 255);
         }
     }
     return this.invertedMatrix;
 };
-ZXing.InvertedLuminanceSource.prototype.get_CropSupported = function (){
+ZXing.InvertedLuminanceSource.prototype.get_CropSupported = function() {
     return this.delegate.get_CropSupported();
 };
-ZXing.InvertedLuminanceSource.prototype.crop = function (left, top, width, height){
-    return new ZXing.InvertedLuminanceSource(this.delegate.crop(left, top, width, height));
+ZXing.InvertedLuminanceSource.prototype.crop = function(
+    left,
+    top,
+    width,
+    height
+) {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.crop(left, top, width, height)
+    );
 };
-ZXing.InvertedLuminanceSource.prototype.get_RotateSupported = function (){
+ZXing.InvertedLuminanceSource.prototype.get_RotateSupported = function() {
     return this.delegate.get_RotateSupported();
 };
-ZXing.InvertedLuminanceSource.prototype.invert = function (){
+ZXing.InvertedLuminanceSource.prototype.invert = function() {
     return this.delegate;
 };
-ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise = function (){
-    return new ZXing.InvertedLuminanceSource(this.delegate.rotateCounterClockwise());
+ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise = function() {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.rotateCounterClockwise()
+    );
 };
-ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise45 = function (){
-    return new ZXing.InvertedLuminanceSource(this.delegate.rotateCounterClockwise45());
+ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise45 = function() {
+    return new ZXing.InvertedLuminanceSource(
+        this.delegate.rotateCounterClockwise45()
+    );
 };
-
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -825,7 +841,7 @@ ZXing.InvertedLuminanceSource.prototype.rotateCounterClockwise45 = function (){
 // limitations under the License.
 ///
 
-ZXing.BaseLuminanceSource = function (width, height) {
+ZXing.BaseLuminanceSource = function(width, height) {
     this.luminances = null;
     this.luminances = new Uint8Array(width * height);
 };
@@ -835,7 +851,7 @@ ZXing.BaseLuminanceSource.GChannelWeight = 38550;
 ZXing.BaseLuminanceSource.BChannelWeight = 7424;
 ZXing.BaseLuminanceSource.ChannelWeight = 16;
 
-ZXing.BaseLuminanceSource = function (luminanceArray, width, height) {
+ZXing.BaseLuminanceSource = function(luminanceArray, width, height) {
     this.luminances = [];
     if (luminanceArray instanceof Array) {
         this.luminances = luminanceArray.slice(0);
@@ -846,38 +862,42 @@ ZXing.BaseLuminanceSource = function (luminanceArray, width, height) {
     }
     ZXing.LuminanceSource.call(this, width, height);
 };
-ZXing.BaseLuminanceSource.prototype.getRow = function (y, row) {
+ZXing.BaseLuminanceSource.prototype.getRow = function(y, row) {
     var width = this.get_Width();
     if (!row || row.length < width) {
         row = new Uint8Array(width);
     }
-    for (var i = 0; i < width; i++)
-        row[i] = this.luminances[y * width + i];
+    for (var i = 0; i < width; i++) row[i] = this.luminances[y * width + i];
     return row;
 };
-ZXing.BaseLuminanceSource.prototype.get_Matrix = function () {
+ZXing.BaseLuminanceSource.prototype.get_Matrix = function() {
     return this.luminances;
 };
-ZXing.BaseLuminanceSource.prototype.rotateCounterClockwise = function () {
-    var rotatedLuminances = new Uint8Array(this.get_Width() * this.get_Height());
+ZXing.BaseLuminanceSource.prototype.rotateCounterClockwise = function() {
+    var rotatedLuminances = new Uint8Array(
+        this.get_Width() * this.get_Height()
+    );
     var newWidth = this.get_Height();
     var newHeight = this.get_Width();
     var localLuminances = this.get_Matrix();
-    for (var yold = 0; yold < this.get_Height() ; yold++) {
-        for (var xold = 0; xold < this.get_Width() ; xold++) {
+    for (var yold = 0; yold < this.get_Height(); yold++) {
+        for (var xold = 0; xold < this.get_Width(); xold++) {
             var ynew = newHeight - xold - 1;
-            rotatedLuminances[ynew * newWidth + yold] = localLuminances[yold * this.get_Width() + xold];
+            rotatedLuminances[ynew * newWidth + yold] =
+                localLuminances[yold * this.get_Width() + xold];
         }
     }
     return this.CreateLuminanceSource(rotatedLuminances, newWidth, newHeight);
 };
-ZXing.BaseLuminanceSource.prototype.rotateCounterClockwise45 = function () {
-    return ZXing.LuminanceSource.commonPrototype.rotateCounterClockwise45.call(this);
+ZXing.BaseLuminanceSource.prototype.rotateCounterClockwise45 = function() {
+    return ZXing.LuminanceSource.commonPrototype.rotateCounterClockwise45.call(
+        this
+    );
 };
-ZXing.BaseLuminanceSource.prototype.get_RotateSupported = function () {
+ZXing.BaseLuminanceSource.prototype.get_RotateSupported = function() {
     return true;
 };
-ZXing.BaseLuminanceSource.prototype.crop = function (left, top, width, height) {
+ZXing.BaseLuminanceSource.prototype.crop = function(left, top, width, height) {
     if (left + width > this.get_Width() || top + height > this.get_Height()) {
         throw new Error("Crop rectangle does not fit within image data.");
     }
@@ -888,28 +908,28 @@ ZXing.BaseLuminanceSource.prototype.crop = function (left, top, width, height) {
     var oldBottomBound = top + height;
     for (var yold = top, ynew = 0; yold < oldBottomBound; yold++, ynew++) {
         for (var xold = left, xnew = 0; xold < oldRightBound; xold++, xnew++) {
-            croppedLuminances[ynew * width + xnew] = oldLuminances[yold * oldWidth + xold];
+            croppedLuminances[ynew * width + xnew] =
+                oldLuminances[yold * oldWidth + xold];
         }
     }
     return this.CreateLuminanceSource(croppedLuminances, width, height);
 };
-ZXing.BaseLuminanceSource.prototype.get_CropSupported = function () {
+ZXing.BaseLuminanceSource.prototype.get_CropSupported = function() {
     return true;
 };
-ZXing.BaseLuminanceSource.prototype.get_InversionSupported = function () {
+ZXing.BaseLuminanceSource.prototype.get_InversionSupported = function() {
     return true;
 };
-ZXing.BaseLuminanceSource.prototype.invert = function () {
+ZXing.BaseLuminanceSource.prototype.invert = function() {
     return new ZXing.InvertedLuminanceSource(this);
 };
 $Inherit(ZXing.BaseLuminanceSource, ZXing.LuminanceSource);
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015
-//  
+//
 // desertconsulting@gmail.com, https://github.com/PeculiarVentures/validatewallet.com
 //
-
 
 //
 // Copyright 2007 ZXing authors
@@ -927,70 +947,1372 @@ $Inherit(ZXing.BaseLuminanceSource, ZXing.LuminanceSource);
 // limitations under the License.
 ///
 
-ZXing.BitmapLuminanceSource = function (bitmap, w, h) {
-
-  var debug = typeof window != 'undefined' && window.__debug === true;
-  var width, height;
-  if (typeof bitmap == 'number') {
-    width = bitmap;
-    height = w;
-    ZXing.BaseLuminanceSource.call(this, width, height);
-  } else {
-    var canvas, data;
-    if (bitmap instanceof Uint8ClampedArray) {
-      width = w;
-      height = h;
-      data = bitmap;
-    } else if (bitmap instanceof ImageData) {
-      width = w || bitmap.width;
-      height = h || bitmap.height;
-      data = bitmap.data;
+ZXing.BitmapLuminanceSource = function(bitmap, w, h) {
+    var debug = typeof window != "undefined" && window.__debug === true;
+    var width, height;
+    if (typeof bitmap == "number") {
+        width = bitmap;
+        height = w;
+        ZXing.BaseLuminanceSource.call(this, width, height);
     } else {
-      canvas = w;
-      width = canvas.naturalWidth;
-      height = canvas.naturalHeight;
-      var imageData = bitmap.getImageData(0, 0, width, height);
-      data = imageData.data;
-    }
-    ZXing.BaseLuminanceSource.call(this, width, height);
-
-    var stride = Math.abs(data.length / height);
-
-    if (debug) this.debugBitmap = [];
-    //console.time("luminances")
-    for(var y = 0; y < height; y++) {
-      var strideOffset = y * stride;
-
-      var maxIndex = (4 * width) + strideOffset;
-      for(var x = strideOffset; x < maxIndex; x += 4) {
-        var luminance = ((7424 * data[x] + 38550 * data[x + 1] + 19562 * data[x + 2]) >> 16);
-        //var alpha = data[x + 3];
-        //luminance = (((luminance * alpha) >> 8) + (255 * (255 - alpha) >> 8) + 1);
-
-        //luminance = luminance < 50 ? 1 : (luminance > 90 ? 255 : luminance)
-
-        this.luminances.push(luminance);
-        if (debug) {
-          this.debugBitmap.push(luminance);
-          this.debugBitmap.push(luminance);
-          this.debugBitmap.push(luminance);
-          this.debugBitmap.push(255);
+        var canvas, data;
+        if (bitmap instanceof Uint8ClampedArray) {
+            width = w;
+            height = h;
+            data = bitmap;
+        } else if (bitmap instanceof ImageData) {
+            width = w || bitmap.width;
+            height = h || bitmap.height;
+            data = bitmap.data;
+        } else {
+            canvas = w;
+            width = canvas.naturalWidth;
+            height = canvas.naturalHeight;
+            var imageData = bitmap.getImageData(0, 0, width, height);
+            data = imageData.data;
         }
-      }
+        ZXing.BaseLuminanceSource.call(this, width, height);
+
+        var stride = Math.abs(data.length / height);
+
+        if (debug) this.debugBitmap = [];
+        //console.time("luminances")
+        for (var y = 0; y < height; y++) {
+            var strideOffset = y * stride;
+
+            var maxIndex = 4 * width + strideOffset;
+            for (var x = strideOffset; x < maxIndex; x += 4) {
+                var luminance =
+                    (7424 * data[x] +
+                        38550 * data[x + 1] +
+                        19562 * data[x + 2]) >>
+                    16;
+                //var alpha = data[x + 3];
+                //luminance = (((luminance * alpha) >> 8) + (255 * (255 - alpha) >> 8) + 1);
+
+                //luminance = luminance < 50 ? 1 : (luminance > 90 ? 255 : luminance)
+
+                this.luminances.push(luminance);
+                if (debug) {
+                    this.debugBitmap.push(luminance);
+                    this.debugBitmap.push(luminance);
+                    this.debugBitmap.push(luminance);
+                    this.debugBitmap.push(255);
+                }
+            }
+        }
+        //console.timeEnd("luminances")
     }
-    //console.timeEnd("luminances")
-  }
 };
 
-ZXing.BitmapLuminanceSource.prototype.CreateLuminanceSource = function (newLuminances, width, height) {
-  return (function () {
-    var $v1 = new ZXing.BitmapLuminanceSource(width, height);
-    $v1.luminances = newLuminances;
-    return $v1;
-  }).call(this);
+ZXing.BitmapLuminanceSource.prototype.CreateLuminanceSource = function(
+    newLuminances,
+    width,
+    height
+) {
+    return function() {
+        var $v1 = new ZXing.BitmapLuminanceSource(width, height);
+        $v1.luminances = newLuminances;
+        return $v1;
+    }.call(this);
 };
 
 $Inherit(ZXing.BitmapLuminanceSource, ZXing.BaseLuminanceSource);
+
+//
+// Ported to JavaScript by Patrizio Bruno 2015
+//
+// desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.DecoderResult = function(
+    rawBytes,
+    text,
+    byteSegments,
+    ecLevel,
+    saSequence,
+    saParity
+) {
+    this.RawBytes = null;
+    this.Text = null;
+    this.ByteSegments = null;
+    this.ECLevel = null;
+    this.ErrorsCorrected = 0;
+    this.StructuredAppendSequenceNumber = 0;
+    this.Erasures = 0;
+    this.StructuredAppendParity = 0;
+    this.Other = null;
+    if (rawBytes === null && text === null) {
+        throw new Error();
+    }
+    this.RawBytes = rawBytes;
+    this.Text = text;
+    this.ByteSegments = byteSegments;
+    this.ECLevel = ecLevel;
+    this.StructuredAppendParity =
+        typeof saParity == "undefined" ? -1 : saParity;
+    this.StructuredAppendSequenceNumber =
+        typeof saSequence == "undefined" ? -1 : saSequence;
+    this.AmbiguousValuesCount = 0;
+};
+
+//
+//  Ported to JavaScript by Patrizio Bruno 2015
+//
+//desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+ZXing.Common.BitArray = function(bits, size) {
+    this.bits = null;
+    this.size = 0;
+    this.size = arguments.length == 2 ? size : bits ? bits : 0;
+    if (this.size < 1) {
+        throw new Error("size must be at least 1");
+    }
+    this.bits =
+        arguments.length == 2
+            ? bits
+            : this.size
+            ? ZXing.Common.BitArray.makeArray(this.size)
+            : [];
+};
+ZXing.Common.BitArray._lookup = new Int32Array([
+    32,
+    0,
+    1,
+    26,
+    2,
+    23,
+    27,
+    0,
+    3,
+    16,
+    24,
+    30,
+    28,
+    11,
+    0,
+    13,
+    4,
+    7,
+    17,
+    0,
+    25,
+    22,
+    31,
+    15,
+    29,
+    10,
+    12,
+    6,
+    0,
+    21,
+    14,
+    9,
+    5,
+    20,
+    8,
+    19,
+    18
+]);
+ZXing.Common.BitArray.prototype.get_Size = function() {
+    return this.size;
+};
+ZXing.Common.BitArray.prototype.get_SizeInBytes = function() {
+    return (this.size + 7) >> 3;
+};
+ZXing.Common.BitArray.prototype.get_Item = function(i) {
+    return (this.bits[i >> 5] & (1 << (i & 31))) != 0;
+};
+ZXing.Common.BitArray.prototype.set_Item = function(i, value) {
+    if (value) this.bits[i >> 5] |= 1 << (i & 31);
+};
+ZXing.Common.BitArray.prototype.ensureCapacity = function(size) {
+    var that = this,
+        bits = that.bits;
+
+    if (size > bits.length << 5) {
+        that.bits = bits.slice(0);
+    }
+};
+ZXing.Common.BitArray.prototype.flip = function(i) {
+    this.bits[i >> 5] ^= 1 << (i & 31);
+};
+ZXing.Common.BitArray.numberOfTrailingZeros = function(num) {
+    var index = (-num & num) % 37;
+    if (index < 0) index *= -1;
+    return ZXing.Common.BitArray._lookup[index];
+};
+ZXing.Common.BitArray.prototype.getNextSet = function(from) {
+    if (from >= this.size) {
+        return this.size;
+    }
+    var bitsOffset = from >> 5;
+    var currentBits = this.bits[bitsOffset];
+    currentBits &= ~((1 << (from & 31)) - 1);
+    while (currentBits == 0) {
+        if (++bitsOffset == this.bits.length) {
+            return this.size;
+        }
+        currentBits = this.bits[bitsOffset];
+    }
+    var result =
+        (bitsOffset << 5) +
+        ZXing.Common.BitArray.numberOfTrailingZeros(currentBits);
+    return result > this.size ? this.size : result;
+};
+ZXing.Common.BitArray.prototype.getNextUnset = function(from) {
+    if (from >= this.size) {
+        return this.size;
+    }
+    var bitsOffset = from >> 5;
+    var currentBits = ~this.bits[bitsOffset];
+    currentBits &= ~((1 << (from & 31)) - 1);
+    while (currentBits == 0) {
+        if (++bitsOffset == this.bits.length) {
+            return this.size;
+        }
+        currentBits = ~this.bits[bitsOffset];
+    }
+    var result =
+        (bitsOffset << 5) +
+        ZXing.Common.BitArray.numberOfTrailingZeros(currentBits);
+    return result > this.size ? this.size : result;
+};
+ZXing.Common.BitArray.prototype.setBulk = function(i, newBits) {
+    this.bits[i >> 5] = newBits;
+};
+ZXing.Common.BitArray.prototype.setRange = function(start, end) {
+    if (end < start) {
+        throw new Error("start after end");
+    }
+    if (end == start) {
+        return;
+    }
+    end--;
+    var firstInt = start >> 5;
+    var lastInt = end >> 5;
+    for (var i = firstInt; i <= lastInt; i++) {
+        var firstBit = i > firstInt ? 0 : start & 31;
+        var lastBit = i < lastInt ? 31 : end & 31;
+        var mask;
+        if (firstBit == 0 && lastBit == 31) {
+            mask = -1;
+        } else {
+            mask = 0;
+            for (var j = firstBit; j <= lastBit; j++) {
+                mask |= 1 << j;
+            }
+        }
+        this.bits[i] |= mask;
+    }
+};
+ZXing.Common.BitArray.prototype.clear = function() {
+    var max = this.bits.length;
+    for (var i = 0; i < max; i++) {
+        this.bits[i] = 0;
+    }
+};
+ZXing.Common.BitArray.prototype.isRange = function(start, end, value) {
+    if (end < start) {
+        throw new Error();
+    }
+    if (end == start) {
+        return true;
+    }
+    end--;
+    var firstInt = start >> 5;
+    var lastInt = end >> 5;
+    for (var i = firstInt; i <= lastInt; i++) {
+        var firstBit = i > firstInt ? 0 : start & 31;
+        var lastBit = i < lastInt ? 31 : end & 31;
+        var mask;
+        if (firstBit == 0 && lastBit == 31) {
+            mask = -1;
+        } else {
+            mask = 0;
+            for (var j = firstBit; j <= lastBit; j++) {
+                mask |= 1 << j;
+            }
+        }
+        if ((this.bits[i] & mask) != (value ? mask : 0)) {
+            return false;
+        }
+    }
+    return true;
+};
+ZXing.Common.BitArray.prototype.appendBit = function(bit) {
+    this.ensureCapacity(this.size + 1);
+    if (bit) {
+        this.bits[this.size >> 5] |= 1 << (this.size & 31);
+    }
+    this.size++;
+};
+ZXing.Common.BitArray.prototype.get_Array = function() {
+    return this.bits;
+};
+ZXing.Common.BitArray.prototype.appendBits = function(value, numBits) {
+    if (numBits < 0 || numBits > 32) {
+        throw new Error("Num bits must be between 0 and 32");
+    }
+    this.ensureCapacity(this.size + numBits);
+    for (var numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
+        this.appendBit(((value >> (numBitsLeft - 1)) & 1) == 1);
+    }
+};
+ZXing.Common.BitArray.prototype.appendBitArray = function(other) {
+    var otherSize = other.size;
+    this.ensureCapacity(this.size + otherSize);
+    for (var i = 0; i < otherSize; i++) {
+        this.appendBit(other.get_Item(i));
+    }
+};
+ZXing.Common.BitArray.prototype.xor = function(other) {
+    if (this.bits.length != other.bits.length) {
+        throw new Error("Sizes don't match");
+    }
+    for (var i = 0; i < this.bits.length; i++) {
+        this.bits[i] ^= other.bits[i];
+    }
+};
+ZXing.Common.BitArray.prototype.toBytes = function(
+    bitOffset,
+    array,
+    offset,
+    numBytes
+) {
+    for (var i = 0; i < numBytes; i++) {
+        var theByte = 0;
+        for (var j = 0; j < 8; j++) {
+            if (this.get_Item(bitOffset)) {
+                theByte |= 1 << (7 - j);
+            }
+            bitOffset++;
+        }
+        array[offset + i] = theByte;
+    }
+};
+ZXing.Common.BitArray.prototype.reverse = function() {
+    var newBits = [];
+    var len = (this.size - 1) >> 5;
+    var oldBitsLen = len + 1;
+    for (var i = 0; i < oldBitsLen; i++) {
+        var x = this.bits[i];
+        x = ((x >> 1) & 1431655765) | ((x & 1431655765) << 1);
+        x = ((x >> 2) & 858993459) | ((x & 858993459) << 2);
+        x = ((x >> 4) & 252645135) | ((x & 252645135) << 4);
+        x = ((x >> 8) & 16711935) | ((x & 16711935) << 8);
+        x = ((x >> 16) & 65535) | ((x & 65535) << 16);
+        newBits[len - i] = x;
+    }
+    if (this.size != oldBitsLen * 32) {
+        var leftOffset = oldBitsLen * 32 - this.size;
+        var mask = 1;
+        for (var i1 = 0; i1 < 31 - leftOffset; i1++) mask = (mask << 1) | 1;
+        var currentInt = (newBits[0] >> leftOffset) & mask;
+        for (var i2 = 1; i2 < oldBitsLen; i2++) {
+            var nextInt = newBits[i2];
+            currentInt |= nextInt << (32 - leftOffset);
+            newBits[i2 - 1] = currentInt;
+            currentInt = (nextInt >> leftOffset) & mask;
+        }
+        newBits[oldBitsLen - 1] = currentInt;
+    }
+    this.bits = newBits;
+};
+ZXing.Common.BitArray.makeArray = function(size) {
+    return ZeroFilledInt32Array((size + 31) >> 5);
+};
+ZXing.Common.BitArray.prototype.Equals = function(o) {
+    var other = o instanceof ZXing.Common.BitArray ? o : null;
+    if (other == null) return false;
+    if (this.size != other.size) return false;
+    for (var index = 0; index < this.size; index++) {
+        if (this.bits[index] != other.bits[index]) return false;
+    }
+    return true;
+};
+ZXing.Common.BitArray.prototype.toString = function() {
+    var result = "";
+    for (var i = 0; i < this.size; i++) {
+        if ((i & 7) == 0) {
+            result += " ";
+        }
+        result += this.get_Item(i) ? "X" : ".";
+    }
+    return result;
+};
+ZXing.Common.BitArray.prototype.Clone = function() {
+    return new ZXing.Common.BitArray(this.bits.slice(0), this.size);
+};
+
+//
+//Ported to JavaScript by Patrizio Bruno 2015
+//
+//desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.BitMatrix = function(width, height, rowSize, bits) {
+    this.width = 0;
+    this.height = 0;
+    this.rowSize = 0;
+    this.bits = null;
+
+    if (width < 1 || (typeof height != "undefined" && height < 1)) {
+        throw new Error("Both dimensions must be greater than 0");
+    }
+
+    this.width = width;
+    this.height = arguments.length > 1 ? height : width;
+    this.rowSize = arguments.length == 4 ? rowSize : (width + 31) >> 5;
+    this.bits =
+        arguments.length == 4
+            ? bits
+            : arguments.length == 3
+            ? rowSize
+            : new Int32Array(this.rowSize * this.height);
+};
+
+ZXing.Common.BitMatrix.prototype.get_Width = function() {
+    return this.width;
+};
+ZXing.Common.BitMatrix.prototype.get_Height = function() {
+    return this.height;
+};
+ZXing.Common.BitMatrix.prototype.get_Dimension = function() {
+    if (this.width != this.height) {
+        throw new Error("Can't call Dimension on a non-square matrix");
+    }
+    return this.width;
+};
+ZXing.Common.BitMatrix.prototype.get_RowSize = function() {
+    return this.rowSize;
+};
+ZXing.Common.BitMatrix.parse = function(
+    stringRepresentation,
+    setString,
+    unsetString
+) {
+    if (stringRepresentation == null) {
+        throw new Error();
+    }
+    var bits = new Array(stringRepresentation.length);
+    var bitsPos = 0;
+    var rowStartPos = 0;
+    var rowLength = -1;
+    var nRows = 0;
+    var pos = 0;
+    while (pos < stringRepresentation.length) {
+        if (
+            stringRepresentation.substr(pos, 1) == "\n" ||
+            stringRepresentation.substr(pos, 1) == "\r"
+        ) {
+            if (bitsPos > rowStartPos) {
+                if (rowLength == -1) {
+                    rowLength = bitsPos - rowStartPos;
+                } else if (bitsPos - rowStartPos != rowLength) {
+                    throw new Error("row lengths do not match");
+                }
+                rowStartPos = bitsPos;
+                nRows++;
+            }
+            pos++;
+        } else if (
+            stringRepresentation.substr(pos, setString.length) == setString
+        ) {
+            pos += setString.length;
+            bits[bitsPos] = true;
+            bitsPos++;
+        } else if (
+            stringRepresentation.substr(pos, unsetString.length) == unsetString
+        ) {
+            pos += unsetString.length;
+            bits[bitsPos] = false;
+            bitsPos++;
+        } else {
+            throw new Error(
+                "illegal character encountered: " +
+                    stringRepresentation.substr(pos)
+            );
+        }
+    }
+    if (bitsPos > rowStartPos) {
+        if (rowLength == -1) {
+            rowLength = bitsPos - rowStartPos;
+        } else if (bitsPos - rowStartPos != rowLength) {
+            throw new Error("row lengths do not match");
+        }
+        nRows++;
+    }
+    var matrix = new ZXing.Common.BitMatrix(rowLength, nRows);
+    for (var i = 0; i < bitsPos; i++) {
+        if (bits[i]) {
+            matrix.set_Item(i % rowLength, Math.floor(i / rowLength), true);
+        }
+    }
+    return matrix;
+};
+ZXing.Common.BitMatrix.prototype.get_Item = function(x, y) {
+    var offset = y * this.rowSize + (x >> 5);
+    return ((this.bits[offset] >> (x & 31)) & 1) != 0;
+};
+ZXing.Common.BitMatrix.prototype.set_Item = function(x, y, value) {
+    var offset;
+    if (value) {
+        offset = y * this.rowSize + (x >> 5);
+        this.bits[offset] |= 1 << (x & 31);
+    } else {
+        offset = y * this.rowSize + Math.floor(x / 32);
+        this.bits[offset] &= ~(1 << (x & 31));
+    }
+};
+ZXing.Common.BitMatrix.prototype.flip = function(x, y) {
+    var offset = y * this.rowSize + (x >> 5);
+    this.bits[offset] ^= 1 << (x & 31);
+};
+ZXing.Common.BitMatrix.prototype.xor = function(mask) {
+    if (
+        this.width != mask.get_Width() ||
+        this.height != mask.get_Height() ||
+        this.rowSize != mask.get_RowSize()
+    ) {
+        throw new Error("input matrix dimensions do not match");
+    }
+    var rowArray = new ZXing.Common.BitArray(Math.floor(this.width / 32) + 1);
+    for (var y = 0; y < this.height; y++) {
+        var offset = y * this.rowSize;
+        var row = mask.getRow(y, rowArray).get_Array();
+        for (var x = 0; x < this.rowSize; x++) {
+            this.bits[offset + x] ^= row[x];
+        }
+    }
+};
+ZXing.Common.BitMatrix.prototype.clear = function() {
+    var max = this.bits.length;
+    for (var i = 0; i < max; i++) {
+        this.bits[i] = 0;
+    }
+};
+ZXing.Common.BitMatrix.prototype.setRegion = function(
+    left,
+    top,
+    width,
+    height
+) {
+    if (top < 0 || left < 0) {
+        throw new Error("Left and top must be non negative");
+    }
+    if (height < 1 || width < 1) {
+        throw new Error("Height and width must be at least 1");
+    }
+    var right = left + width;
+    var bottom = top + height;
+    if (bottom > this.height || right > this.width) {
+        throw new Error("The region must fit inside the matrix");
+    }
+    for (var y = top; y < bottom; y++) {
+        var offset = y * this.rowSize;
+        for (var x = left; x < right; x++) {
+            this.bits[offset + (x >> 5)] |= 1 << (x & 31);
+        }
+    }
+};
+ZXing.Common.BitMatrix.prototype.getRow = function(y, row) {
+    if (row == null || row.get_Size() < this.width) {
+        row = new ZXing.Common.BitArray(this.width);
+    } else {
+        row.clear();
+    }
+    var offset = y * this.rowSize;
+    for (var x = 0; x < this.rowSize; x++) {
+        row.setBulk(x << 5, this.bits[offset + x]);
+    }
+    return row;
+};
+ZXing.Common.BitMatrix.prototype.setRow = function(y, row) {
+    row.get_Array().blockCopy(this.bits, y * this.rowSize, this.rowSize);
+};
+ZXing.Common.BitMatrix.prototype.rotate180 = function() {
+    var width = this.get_Width();
+    var height = this.get_Height();
+    var topRow = new ZXing.Common.BitArray(width);
+    var bottomRow = new ZXing.Common.BitArray(width);
+    for (var i = 0; i < (height + 1) / 2; i++) {
+        topRow = this.getRow(i, topRow);
+        bottomRow = this.getRow(height - 1 - i, bottomRow);
+        topRow.reverse();
+        bottomRow.reverse();
+        this.setRow(i, bottomRow);
+        this.setRow(height - 1 - i, topRow);
+    }
+};
+ZXing.Common.BitMatrix.prototype.getEnclosingRectangle = function() {
+    var left = this.width;
+    var top = this.height;
+    var right = -1;
+    var bottom = -1;
+    for (var y = 0; y < this.height; y++) {
+        for (var x32 = 0; x32 < this.rowSize; x32++) {
+            var theBits = this.bits[y * this.rowSize + x32];
+            if (theBits != 0) {
+                if (y < top) {
+                    top = y;
+                }
+                if (y > bottom) {
+                    bottom = y;
+                }
+                if (x32 * 32 < left) {
+                    var bit = 0;
+                    while (theBits << (31 - bit) == 0) {
+                        bit++;
+                    }
+                    if (x32 * 32 + bit < left) {
+                        left = x32 * 32 + bit;
+                    }
+                }
+
+                if (x32 * 32 + 31 > right) {
+                    var bit1 = 31;
+                    while (theBits >> bit == 0) {
+                        bit1--;
+                    }
+                    if (x32 * 32 + bit1 > right) {
+                        right = x32 * 32 + bit1;
+                    }
+                }
+            }
+        }
+    }
+    var widthTmp = right - left;
+    var heightTmp = bottom - top;
+    if (widthTmp < 0 || heightTmp < 0) {
+        return null;
+    }
+    return new Int32Array([left, top, widthTmp, heightTmp]);
+};
+ZXing.Common.BitMatrix.prototype.getTopLeftOnBit = function() {
+    var bitsOffset = 0;
+    while (bitsOffset < this.bits.length && this.bits[bitsOffset] == 0) {
+        bitsOffset++;
+    }
+    if (bitsOffset == this.bits.length) {
+        return null;
+    }
+    var y = Math.floor(bitsOffset / this.rowSize);
+    var x = bitsOffset % this.rowSize << 5;
+    var theBits = this.bits[bitsOffset];
+    var bit = 0;
+    while (theBits << (31 - bit) == 0) {
+        bit++;
+    }
+    x += bit;
+    return new Int32Array([x, y]);
+};
+ZXing.Common.BitMatrix.prototype.getBottomRightOnBit = function() {
+    var bitsOffset = this.bits.length - 1;
+    while (bitsOffset >= 0 && this.bits[bitsOffset] == 0) {
+        bitsOffset--;
+    }
+    if (bitsOffset < 0) {
+        return null;
+    }
+    var y = Math.floor(bitsOffset / this.rowSize);
+    var x = bitsOffset % this.rowSize << 5;
+    var theBits = this.bits[bitsOffset];
+    var bit = 31;
+    while (theBits >> bit == 0) {
+        bit--;
+    }
+    x += bit;
+    return new Int32Array([x, y]);
+};
+ZXing.Common.BitMatrix.prototype.Equals = function(obj) {
+    if (!(obj instanceof ZXing.Common.BitMatrix)) {
+        return false;
+    }
+    var other =
+        obj instanceof ZXing.Common.BitMatrix || obj == null
+            ? obj
+            : (function() {
+                  throw new Error("InvalidCastException");
+              })();
+    if (
+        this.width != other.width ||
+        this.height != other.height ||
+        this.rowSize != other.rowSize ||
+        this.bits.length != other.bits.length
+    ) {
+        return false;
+    }
+    for (var i = 0; i < this.bits.length; i++) {
+        if (this.bits[i] != other.bits[i]) {
+            return false;
+        }
+    }
+    return true;
+};
+
+ZXing.Common.BitMatrix.prototype.toString = function(
+    setString,
+    unsetString,
+    lineSeparator
+) {
+    var result = "";
+
+    // default parameters values
+    setString = setString || "X";
+    unsetString = unsetString || "  ";
+    lineSeparator = lineSeparator || "\n";
+
+    for (var y = 0; y < this.height; y++) {
+        for (var x = 0; x < this.width; x++) {
+            result += this.get_Item(x, y) ? setString : unsetString;
+        }
+        result += lineSeparator;
+    }
+    return result;
+};
+ZXing.Common.BitMatrix.prototype.Clone = function() {
+    return new ZXing.Common.BitMatrix(
+        this.width,
+        this.height,
+        this.rowSize,
+        this.bits.slice(0)
+    );
+};
+
+//
+//  Ported to JavaScript by Patrizio Bruno 2015
+//
+//  desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+ZXing.Common.Detector.MathUtils = function() {};
+
+ZXing.Common.Detector.MathUtils.distance = function(aX, aY, bX, bY) {
+    var xDiff = aX - bX;
+    var yDiff = aY - bY;
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+};
+
+//
+// Ported to JavaScript by Patrizio Bruno 2015
+//
+// desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.ECI = function(value_Renamed) {
+    this.value_Renamed = 0;
+    this.value_Renamed = value_Renamed;
+};
+ZXing.Common.ECI.prototype.get_Value = function() {
+    return this.value_Renamed;
+};
+ZXing.Common.ECI.getECIByValue = function(value_Renamed) {
+    if (value_Renamed < 0 || value_Renamed > 999999) {
+        throw new Error("Bad ECI value: " + value_Renamed);
+    }
+    if (value_Renamed < 900) {
+        return ZXing.Common.CharacterSetECI.getCharacterSetECIByValue(
+            value_Renamed
+        );
+    }
+    return null;
+};
+
+//
+// Ported to JavaScript by Patrizio Bruno 2015
+//
+// desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.CharacterSetECI = function(value, encodingName) {
+    this.encodingName = null;
+    ZXing.Common.ECI.call(this, value);
+    this.encodingName = encodingName;
+};
+ZXing.Common.CharacterSetECI.prototype.get_EncodingName = function() {
+    return this.encodingName;
+};
+
+ZXing.Common.CharacterSetECI.addCharacterSet = function(value, encodingNames) {
+    if (Array.isArray(encodingNames)) {
+        var eci = new ZXing.Common.CharacterSetECI(value, encodingNames[0]);
+        ZXing.Common.CharacterSetECI.VALUE_TO_ECI[value] = eci;
+        for (
+            var $i4 = 0, $l4 = encodingNames.length, t = encodingNames[$i4];
+            $i4 < $l4;
+            $i4++, t = encodingNames[$i4]
+        ) {
+            ZXing.Common.CharacterSetECI.NAME_TO_ECI[t] = eci;
+        }
+    } else {
+        var encodingName = encodingNames;
+        var eci2 = new ZXing.Common.CharacterSetECI(value, encodingName);
+        ZXing.Common.CharacterSetECI.VALUE_TO_ECI[value] = eci2;
+        ZXing.Common.CharacterSetECI.NAME_TO_ECI[
+            encodingName.toUpperCase()
+        ] = eci2;
+    }
+};
+
+ZXing.Common.CharacterSetECI.VALUE_TO_ECI = null;
+ZXing.Common.CharacterSetECI.NAME_TO_ECI = null;
+ZXing.Common.CharacterSetECI.VALUE_TO_ECI = {};
+ZXing.Common.CharacterSetECI.NAME_TO_ECI = {};
+ZXing.Common.CharacterSetECI.addCharacterSet(0, "CP437");
+ZXing.Common.CharacterSetECI.addCharacterSet(1, ["ISO-8859-1", "ISO8859_1"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(2, "CP437");
+ZXing.Common.CharacterSetECI.addCharacterSet(3, ["ISO-8859-1", "ISO8859_1"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(4, ["ISO-8859-2", "ISO8859_2"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(5, ["ISO-8859-3", "ISO8859_3"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(6, ["ISO-8859-4", "ISO8859_4"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(7, ["ISO-8859-5", "ISO8859_5"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(8, ["ISO-8859-6", "ISO8859_6"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(9, ["ISO-8859-7", "ISO8859_7"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(10, ["ISO-8859-8", "ISO8859_8"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(11, ["ISO-8859-9", "ISO8859_9"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(12, [
+    "ISO-8859-4",
+    "ISO-8859-10",
+    "ISO8859_10"
+]);
+ZXing.Common.CharacterSetECI.addCharacterSet(13, ["ISO-8859-11", "ISO8859_11"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(15, ["ISO-8859-13", "ISO8859_13"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(16, [
+    "ISO-8859-1",
+    "ISO-8859-14",
+    "ISO8859_14"
+]);
+ZXing.Common.CharacterSetECI.addCharacterSet(17, ["ISO-8859-15", "ISO8859_15"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(18, [
+    "ISO-8859-3",
+    "ISO-8859-16",
+    "ISO8859_16"
+]);
+ZXing.Common.CharacterSetECI.addCharacterSet(20, ["SJIS", "Shift_JIS"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(21, ["WINDOWS-1250", "CP1250"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(22, ["WINDOWS-1251", "CP1251"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(23, ["WINDOWS-1252", "CP1252"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(24, ["WINDOWS-1256", "CP1256"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(25, ["UTF-16BE", "UNICODEBIG"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(26, ["UTF-8", "UTF8"]);
+ZXing.Common.CharacterSetECI.addCharacterSet(27, "US-ASCII");
+ZXing.Common.CharacterSetECI.addCharacterSet(170, "US-ASCII");
+ZXing.Common.CharacterSetECI.addCharacterSet(28, "BIG5");
+ZXing.Common.CharacterSetECI.addCharacterSet(29, [
+    "GB18030",
+    "GB2312",
+    "EUC_CN",
+    "GBK"
+]);
+ZXing.Common.CharacterSetECI.addCharacterSet(30, ["EUC-KR", "EUC_KR"]);
+ZXing.Common.CharacterSetECI.getCharacterSetECIByValue = function(value) {
+    if (value < 0 || value >= 900) {
+        return null;
+    }
+    return ZXing.Common.CharacterSetECI.VALUE_TO_ECI[value];
+};
+ZXing.Common.CharacterSetECI.getCharacterSetECIByName = function(name) {
+    return ZXing.Common.CharacterSetECI.NAME_TO_ECI[name.toUpperCase()];
+};
+$Inherit(ZXing.Common.CharacterSetECI, ZXing.Common.ECI);
+
+//
+// Ported to JavaScript by Patrizio Bruno 2015
+//
+// desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.GlobalHistogramBinarizer = function(source) {
+    this.luminances = null;
+    this.buckets = null;
+    ZXing.Binarizer.call(this, source);
+    this.luminances = ZXing.Common.GlobalHistogramBinarizer.EMPTY;
+    this.buckets = new Int32Array(32);
+};
+ZXing.Common.GlobalHistogramBinarizer.LUMINANCE_BITS = 5;
+ZXing.Common.GlobalHistogramBinarizer.LUMINANCE_SHIFT = 3;
+ZXing.Common.GlobalHistogramBinarizer.LUMINANCE_BUCKETS = 32;
+ZXing.Common.GlobalHistogramBinarizer.EMPTY = new Uint8Array(0);
+ZXing.Common.GlobalHistogramBinarizer.prototype.getBlackRow = function(y, row) {
+    var source = this.get_LuminanceSource();
+    var width = source.get_Width();
+    if (row == null || row.get_Size() < width) {
+        row = new ZXing.Common.BitArray(width);
+    } else {
+        row.clear();
+    }
+    this.initArrays(width);
+    var localLuminances = source.getRow(y, this.luminances);
+    var localBuckets = this.buckets;
+    for (var x = 0; x < width; x++) {
+        var pixel = localLuminances[x] & 255;
+        localBuckets[pixel >> 3]++;
+    }
+    var blackPoint = 0;
+    if (
+        !function() {
+            var $1 = {
+                Value: blackPoint
+            };
+            var $res = ZXing.Common.GlobalHistogramBinarizer.estimateBlackPoint(
+                localBuckets,
+                $1
+            );
+            blackPoint = $1.Value;
+            return $res;
+        }.call(this)
+    )
+        return null;
+    var left = localLuminances[0] & 255;
+    var center = localLuminances[1] & 255;
+    for (var x1 = 1; x1 < width - 1; x1++) {
+        var right = localLuminances[x1 + 1] & 255;
+        var luminance = ((center << 2) - left - right) >> 1;
+        row.set_Item(x1, luminance < blackPoint);
+        left = center;
+        center = right;
+    }
+    return row;
+};
+ZXing.Common.GlobalHistogramBinarizer.prototype.get_BlackMatrix = function() {
+    var source = this.get_LuminanceSource();
+    var localLuminances;
+    var width = source.get_Width();
+    var height = source.get_Height();
+    var matrix = new ZXing.Common.BitMatrix(width, height);
+    this.initArrays(width);
+    var localBuckets = this.buckets;
+    var pixel;
+    for (var y = 1; y < 5; y++) {
+        var row = height * Math.floor(y / 5);
+        localLuminances = source.getRow(row, this.luminances);
+        var right = Math.floor((width << 2) / 5);
+        for (var x = width / 5; x < right; x++) {
+            pixel = localLuminances[x] & 255;
+            localBuckets[pixel >> 3]++;
+        }
+    }
+    var blackPoint = 0;
+    if (
+        !function() {
+            var $1 = {
+                Value: blackPoint
+            };
+            var $res = ZXing.Common.GlobalHistogramBinarizer.estimateBlackPoint(
+                localBuckets,
+                $1
+            );
+            blackPoint = $1.Value;
+            return $res;
+        }.call(this)
+    )
+        return null;
+    localLuminances = source.get_Matrix();
+    for (var y1 = 0; y1 < height; y1++) {
+        var offset = y1 * width;
+        for (var x1 = 0; x1 < width; x1++) {
+            pixel = localLuminances[offset + x1] & 255;
+            matrix.set_Item(x1, y1, pixel < blackPoint);
+        }
+    }
+    return matrix;
+};
+ZXing.Common.GlobalHistogramBinarizer.prototype.createBinarizer = function(
+    source
+) {
+    return new ZXing.Common.GlobalHistogramBinarizer(source);
+};
+ZXing.Common.GlobalHistogramBinarizer.prototype.initArrays = function(
+    luminanceSize
+) {
+    if (this.luminances.length < luminanceSize) {
+        this.luminances = new Uint8Array(luminanceSize);
+    }
+    for (var x = 0; x < 32; x++) {
+        this.buckets[x] = 0;
+    }
+};
+ZXing.Common.GlobalHistogramBinarizer.estimateBlackPoint = function(
+    buckets,
+    blackPoint
+) {
+    blackPoint.Value = 0;
+    var numBuckets = buckets.length;
+    var maxBucketCount = 0;
+    var firstPeak = 0;
+    var firstPeakSize = 0;
+    for (var x = 0; x < numBuckets; x++) {
+        if (buckets[x] > firstPeakSize) {
+            firstPeak = x;
+            firstPeakSize = buckets[x];
+        }
+        if (buckets[x] > maxBucketCount) {
+            maxBucketCount = buckets[x];
+        }
+    }
+    var secondPeak = 0;
+    var secondPeakScore = 0;
+    var score;
+    for (var x1 = 0; x1 < numBuckets; x1++) {
+        var distanceToBiggest = x1 - firstPeak;
+        score = buckets[x1] * distanceToBiggest * distanceToBiggest;
+        if (score > secondPeakScore) {
+            secondPeak = x1;
+            secondPeakScore = score;
+        }
+    }
+    if (firstPeak > secondPeak) {
+        var temp = firstPeak;
+        firstPeak = secondPeak;
+        secondPeak = temp;
+    }
+    if (secondPeak - firstPeak <= numBuckets >> 4) {
+        return false;
+    }
+    var bestValley = secondPeak - 1;
+    var bestValleyScore = -1;
+    for (x = secondPeak - 1; x > firstPeak; x--) {
+        var fromFirst = x - firstPeak;
+        score =
+            fromFirst *
+            fromFirst *
+            (secondPeak - x) *
+            (maxBucketCount - buckets[x]);
+        if (score > bestValleyScore) {
+            bestValley = x;
+            bestValleyScore = score;
+        }
+    }
+    blackPoint.Value = bestValley << 3;
+    return true;
+};
+$Inherit(ZXing.Common.GlobalHistogramBinarizer, ZXing.Binarizer);
+
+//
+// Ported to JavaScript by Patrizio Bruno 2015
+//
+// desertconsulting@gmail.com, https://github.com/PeculiarVentures/idscanjs
+//
+
+//
+// Copyright 2007 ZXing authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///
+
+ZXing.Common.HybridBinarizer = function(source) {
+    this.matrix = null;
+    ZXing.Common.GlobalHistogramBinarizer.call(this, source);
+};
+ZXing.Common.HybridBinarizer.BLOCK_SIZE_POWER = 3;
+ZXing.Common.HybridBinarizer.BLOCK_SIZE = 8;
+ZXing.Common.HybridBinarizer.BLOCK_SIZE_MASK = 7;
+ZXing.Common.HybridBinarizer.MINIMUM_DIMENSION = 40;
+ZXing.Common.HybridBinarizer.MIN_DYNAMIC_RANGE = 24;
+ZXing.Common.HybridBinarizer.prototype.get_BlackMatrix = function() {
+    this.binarizeEntireImage();
+    return this.matrix;
+};
+ZXing.Common.HybridBinarizer.prototype.createBinarizer = function(source) {
+    return new ZXing.Common.HybridBinarizer(source);
+};
+ZXing.Common.HybridBinarizer.prototype.binarizeEntireImage = function() {
+    if (this.matrix == null) {
+        var source = this.get_LuminanceSource();
+        var width = source.get_Width();
+        var height = source.get_Height();
+        if (width >= 40 && height >= 40) {
+            var luminances = source.get_Matrix();
+            var subWidth = width >> 3;
+            if ((width & 7) != 0) {
+                subWidth++;
+            }
+            var subHeight = height >> 3;
+            if ((height & 7) != 0) {
+                subHeight++;
+            }
+            var blackPoints = ZXing.Common.HybridBinarizer.calculateBlackPoints(
+                luminances,
+                subWidth,
+                subHeight,
+                width,
+                height
+            );
+            var newMatrix = new ZXing.Common.BitMatrix(width, height);
+            ZXing.Common.HybridBinarizer.calculateThresholdForBlock(
+                luminances,
+                subWidth,
+                subHeight,
+                width,
+                height,
+                blackPoints,
+                newMatrix
+            );
+            this.matrix = newMatrix;
+        } else {
+            this.matrix = ZXing.Common.GlobalHistogramBinarizer.prototype.get_BlackMatrix.call(
+                this
+            );
+        }
+    }
+};
+ZXing.Common.HybridBinarizer.calculateThresholdForBlock = function(
+    luminances,
+    subWidth,
+    subHeight,
+    width,
+    height,
+    blackPoints,
+    matrix
+) {
+    var maxYOffset = height - 8;
+    var maxXOffset = width - 8;
+    var top, yoffset, xoffset, left, sum, blackRow, average;
+
+    for (var y = 0; y < subHeight; y++) {
+        yoffset = y << 3;
+        if (yoffset > maxYOffset) {
+            yoffset = maxYOffset;
+        }
+        top = ZXing.Common.HybridBinarizer.cap(y, 2, subHeight - 3);
+        for (var x = 0; x < subWidth; x++) {
+            xoffset = x << 3;
+            if (xoffset > maxXOffset) {
+                xoffset = maxXOffset;
+            }
+            left = ZXing.Common.HybridBinarizer.cap(x, 2, subWidth - 3);
+            sum = 0;
+            for (var z = -2; z <= 2; z++) {
+                blackRow = blackPoints[top + z];
+                sum += blackRow[left - 2];
+                sum += blackRow[left - 1];
+                sum += blackRow[left];
+                sum += blackRow[left + 1];
+                sum += blackRow[left + 2];
+            }
+            average = Math.floor(sum / 25);
+            ZXing.Common.HybridBinarizer.thresholdBlock(
+                luminances,
+                xoffset,
+                yoffset,
+                average,
+                width,
+                matrix
+            );
+        }
+    }
+};
+ZXing.Common.HybridBinarizer.cap = function(value, min, max) {
+    return value < min ? min : value > max ? max : value;
+};
+ZXing.Common.HybridBinarizer.thresholdBlock = function(
+    luminances,
+    xoffset,
+    yoffset,
+    threshold,
+    stride,
+    matrix
+) {
+    var offset = yoffset * stride + xoffset;
+    var pixel;
+
+    for (var y = 0; y < 8; y++, offset += stride) {
+        for (var x = 0; x < 8; x++) {
+            pixel = luminances[offset + x] & 255;
+            matrix.set_Item(xoffset + x, yoffset + y, pixel <= threshold);
+        }
+    }
+};
+ZXing.Common.HybridBinarizer.calculateBlackPoints = function(
+    luminances,
+    subWidth,
+    subHeight,
+    width,
+    height
+) {
+    var blackPoints = new Array(subHeight);
+    var maxYOffset = height - 8;
+    var maxXOffset = width - 8;
+    for (var i = 0; i < subHeight; i++) {
+        blackPoints[i] = new Int32Array(subWidth);
+    }
+    for (var y = 0; y < subHeight; y++) {
+        var yoffset = y << 3;
+        if (yoffset > maxYOffset) {
+            yoffset = maxYOffset;
+        }
+        for (var x = 0; x < subWidth; x++) {
+            var xoffset = x << 3;
+            if (xoffset > maxXOffset) {
+                xoffset = maxXOffset;
+            }
+            var sum = 0;
+            var min = 255;
+            var max = 0;
+            for (
+                var yy = 0, offset = yoffset * width + xoffset;
+                yy < 8;
+                yy++, offset += width
+            ) {
+                for (var xx = 0; xx < 8; xx++) {
+                    var pixel = luminances[offset + xx] & 255;
+                    sum += pixel;
+                    if (pixel < min) {
+                        min = pixel;
+                    }
+                    if (pixel > max) {
+                        max = pixel;
+                    }
+                }
+                if (max - min > 24) {
+                    for (yy++, offset += width; yy < 8; yy++, offset += width) {
+                        for (xx = 0; xx < 8; xx++) {
+                            sum += luminances[offset + xx] & 255;
+                        }
+                    }
+                }
+            }
+            var average = sum >> 6;
+            if (max - min <= 24) {
+                average = min >> 1;
+                if (y > 0 && x > 0) {
+                    var averageNeighborBlackPoint =
+                        (blackPoints[y - 1][x] +
+                            2 * blackPoints[y][x - 1] +
+                            blackPoints[y - 1][x - 1]) >>
+                        2;
+                    if (min < averageNeighborBlackPoint) {
+                        average = averageNeighborBlackPoint;
+                    }
+                }
+            }
+            blackPoints[y][x] = average;
+        }
+    }
+    return blackPoints;
+};
+$Inherit(ZXing.Common.HybridBinarizer, ZXing.Common.GlobalHistogramBinarizer);
 
 //
 // Ported to JavaScript by Patrizio Bruno 2015

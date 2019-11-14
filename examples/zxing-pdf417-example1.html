@@ -10,18 +10,18 @@
         (function(window, $, undefined) {
             $(function() {
 
-                function handleFiles(f) {
+                function handleFiles(file) {
                     var img = $('img');
-                    img[0].src = URL.createObjectURL(f.target.files[0]);
+                    img[0].src = URL.createObjectURL(file.target.files[0]);
                 }
 
                 function doScan(image) {
-                    var
-                            canvas = document.createElement('canvas'),
-                            canvas_context = canvas.getContext('2d'),
-                            source,
-                            binarizer,
-                            bitmap;
+                    var canvas = document.createElement('canvas');
+                    var canvas_context = canvas.getContext('2d');
+                    var source;
+                    var binarizer;
+                    var bitmap;
+                    var barcodeData;
 
                     $('.error').empty();
                     $('.decodedText').empty();
@@ -34,9 +34,11 @@
                         source = new ZXing.BitmapLuminanceSource(canvas_context, image);
                         binarizer = new ZXing.Common.HybridBinarizer(source);
                         bitmap = new ZXing.BinaryBitmap(binarizer);
-                        $('.decodedText').text(JSON.stringify(ZXing.PDF417.PDF417Reader.decode(bitmap, null, false), null, 4));
+                        barcodeData = ZXing.PDF417.PDF417Reader.decode(bitmap, null, false);
+                        console.log(barcodeData);
+                        $('.decodedText').text(JSON.stringify(barcodeData, null, 4));
                     } catch (err) {
-                        $('.error').text(err);
+                        $('.error').text(err).show();
                     }
                 }
 
@@ -53,15 +55,37 @@
         })(window, window.jQuery);
     </script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         .decodedText {
-            overflow: scroll;
-            max-width: 48%;
+            border: 1px solid #dedede;
             height: 500px;
+            max-width: 600px;
+            overflow: scroll;
+            padding: 1rem;
         }
 
         .error {
+            background-color: rgba(255, 55, 55, .2);
+            border: 1px solid rgba(255, 55, 55, .6);
+            display: none;
             font-weight: bold;
             color: red;
+        }
+
+        .json-info,
+        .sample-image {
+            margin: 1rem;
+        }
+
+        .sample-image img {
+            display: inline-block;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -71,10 +95,12 @@
         <input type="file" id="file" />
         <button type="button">Decode</button>
         <div class="error"></div>
-        <div>
+        <div class="json-info">
             <pre class="decodedText"></pre>
         </div>
-        <img src="./reverse_side_sample.jpg"/>
+        <div class="sample-image">
+            <img src="./reverse_side_sample.jpg" alt="license example" />
+        </div>
     </form>
 </div>
 </body>
